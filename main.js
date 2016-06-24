@@ -28,19 +28,20 @@ jQuery(document).ready(function() {
           remote: {
                 url: "departamentos.php",
                 filter: function (departamentos) {
-                	departamentos = JSON.parse(departamentos);
+                	//departamentos = JSON.parse(departamentos);
                     return $.map(departamentos, function (departamento) {
 
                         return {
                             num: departamento.id_departamento,
                             nombre: departamento.nombre.toLowerCase()
                         };
+
                     });
                 }
            },
            limit: 1000
         });
-        //states.initialize();
+        states.initialize();
 
 	$('#departamentos').typeahead(null, {
 	  name: 'Departamentos',
@@ -48,8 +49,7 @@ jQuery(document).ready(function() {
 	  source: states,
 	  templates: {
 		suggestion: function(data){
-
-		      return '<p><strong>' + data.nombre + '</strong> - ' + data.num + '</p>';
+		      return '<p><strong>Departamento</strong> - ' + data.nombre + '</p>';
 	  }
 
 	}});

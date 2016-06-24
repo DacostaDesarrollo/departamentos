@@ -15,7 +15,7 @@
     	}
 	    $resultado->close();
 
-	    echo json_encode($departamentos);
+	    print json_encode($departamentos);
 	}
 
 ?>
