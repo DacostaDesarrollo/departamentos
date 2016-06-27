@@ -5,6 +5,28 @@
 	<title>Select</title>
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 	</head>
+	<style>
+		.tt-menu {
+		  width: 422px;
+		  margin: 12px 0;
+		  padding: 8px 0;
+		  background-color: #fff;
+		  border: 1px solid #ccc;
+		  border: 1px solid rgba(0, 0, 0, 0.2);
+		  -webkit-border-radius: 8px;
+		     -moz-border-radius: 8px;
+		          border-radius: 8px;
+		  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+		     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+		          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+		}
+
+		.tt-suggestion {
+		  padding: 3px 10px;
+		  font-size: 18px;
+		  line-height: 24px;
+		}
+	</style>
 <body>
 	
 	<!--
@@ -16,7 +38,15 @@
 		
 	</select>
 	-->
-	<input class="typeahead" id="departamentos" type="text" placeholder="Departamentos">
+	<div id="departamentos">
+		<input class="typeahead form-control" id="departamentos" type="text" placeholder="Departamentos">
+	</div>
+
+
+	<div id="ciudad">
+		<input class="typeahead form-control" id="ciudad" type="text" placeholder="Ciudad">
+	</div>
+	
 
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
