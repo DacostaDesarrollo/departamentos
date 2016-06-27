@@ -46,54 +46,6 @@ jQuery(document).ready(function() {
        	
        	departamentos.initialize();
 
-		var ciudad = new Bloodhound({
-          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nombre'),
-          queryTokenizer: Bloodhound.tokenizers.whitespace,
-          remote: {
-          		wildcard: '%QUERY',
-          		header: '<h3 class="league-name">ciudad</h3>',
-                url: "ciudad.php",
-                cache:false,
-                prepare: function (query, settings) {
-                	var q = "ciudad.php";
-  		            if (departamentoSelecionado) {
-		                q += '?departamento='+encodeURIComponent(departamentoSelecionado);
-		                q += '&query='+encodeURIComponent(query);
-		            }
-
-		            return q;
-		        },
-                filter: function (ciudades) {
-                	ciudades = JSON.parse(ciudades);
-                	//departamentos = JSON.parse(departamentos);
-                    return $.map(ciudades, function (ciudad) {
-
-                        return {
-                            num: ciudad.id_ciudad,
-                            nombre: ciudad.nombre.toLowerCase()
-                        };
-
-                    });
-                }
-                
-           },
-           limit: 1000
-        });
-
-		ciudad.initialize();
-       /*
-       	var countries = new Bloodhound({
-		  datumTokenizer: Bloodhound.tokenizers.whitespace,
-		  queryTokenizer: Bloodhound.tokenizers.whitespace,
-		  // url points to a json file that contains an array of country names, see
-		  // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
-		prefetch: {
-			url:'departamentos.php'
-		  }		
-		});	
-		*/
-        departamentos.initialize();
-
 		$('#departamentos .typeahead').typeahead(null, {
 			minLength: 0,
   			highlight: true,
@@ -101,11 +53,10 @@ jQuery(document).ready(function() {
 			display: 'nombre',
 			source: departamentos.ttAdapter(),
 			templates: {
-				empty: [
-			      '<div class="empty-message">',
-			        'No se encontraron datos',
-			      '</div>'
-			    ].join('\n'),
+				empty: function(){
+					console.log("vacio");
+					$('.typeahead').typeahead('val', '');
+				},
 				suggestion: function(data){
 					return '<p><strong>' + data.nombre + '</strong></p>';
 				}
@@ -113,24 +64,34 @@ jQuery(document).ready(function() {
 			}
 		}).on('typeahead:selected', function (e, departamento) {
 		    departamentoSelecionado = departamento.num;
+		    ciudad(departamentoSelecionado);
 		});
 
-		$('#ciudad .typeahead').typeahead(null, {
-			minLength: 0,
-  			highlight: true,
-  			name: 'Ciudad',
-			display: 'nombre',
-			source: ciudad.ttAdapter(),
-			templates: {
-				empty: [
-			      '<div class="empty-message">',
-			        'No se encontraron datos',
-			      '</div>'
-			    ].join('\n'),
-				suggestion: function(data){
-					return '<p><strong>' + data.nombre + '</strong></p>';
-				}
+		var ciudad = function(departamentoId){
 
-			}
-		});
+			$.ajax({
+				url: 'ciudad.php',
+				type: 'POST',
+				dataType: 'json',
+				data: {departamento: departamentoId},
+			})
+			.done(function(cuidades) {
+				$('#ciudad').empty();
+				$.each(cuidades, function (i, item) {
+
+				    $('#ciudad').append($('<option>', { 
+				        value: item.id_ciudad,
+				        text : item.nombre 
+				    }));
+				});
+
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+		};
 });
