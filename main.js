@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
 
-		
+
 		var departamentoSelecionado= 0;
 		/**
 		* Instancia para la petición ajax devuelve los datos encontrados
@@ -66,7 +66,8 @@ jQuery(document).ready(function() {
 			 * Id del departamento
 			 */
 		    departamentoSelecionado = departamento.num;
-
+		   
+		    $('#departamentos .typeahead').attr('idDepartamento',departamentoSelecionado);
 		    /**
 		     * obtiene las ciudades
 		     */
